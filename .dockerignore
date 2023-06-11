@@ -1,0 +1,12 @@
+# build
+bin/
+obj/
+publish/
+
+## editor
+.vscode/
+.idea/
+*.iml
+
+cache/
+deploy/

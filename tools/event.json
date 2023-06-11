@@ -1,0 +1,33 @@
+{
+  "version": "2.0",
+  "routeKey": "$default",
+  "rawPath": "/",
+  "rawQueryString": "",
+  "cookies": [],
+  "headers": {},
+  "queryStringParameters": {},
+  "requestContext": {
+    "accountId": "123456789012",
+    "apiId": "api-id",
+    "authentication": null,
+    "authorizer": null,
+    "domainName": "id.execute-api.us-east-1.amazonaws.com",
+    "domainPrefix": "id",
+    "http": {
+      "method": "POST",
+      "path": "/",
+      "protocol": "HTTP/1.1",
+      "sourceIp": "192.0.2.1",
+      "userAgent": "agent"
+    },
+    "requestId": "id",
+    "routeKey": "$default",
+    "stage": "$default",
+    "time": "12/Mar/2020:19:03:58 +0000",
+    "timeEpoch": 1583348638390
+  },
+  "body": "{\"student\":{\"name\":\"Boring Bored Ape\",\"id\":\"D1234567\",\"birthday\":\"0098-07-06\",\"registerDate\":\"5432-01-01\",\"degree\":3,\"grade\":5,\"department\":\"Monkey Engineering\",\"nationality\":\"Monkey Kindom\",\"kind\":\"Monkey\"},\"icon\":\"w9Ezljy.png\",\"stamp\":\"v0jirwd.png\"}",
+  "pathParameters": {},
+  "isBase64Encoded": false,
+  "stageVariables": {}
+}

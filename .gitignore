@@ -1,0 +1,15 @@
+# build
+bin/
+obj/
+publish/
+
+## editor
+.vscode/
+.idea/
+*.iml
+
+# terraform
+deploy/**/*.*
+!deploy/**/*.tf
+
+cache/
