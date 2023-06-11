@@ -58,16 +58,9 @@ resource "aws_apigatewayv2_integration" "lambda_integration" {
   integration_uri        = aws_lambda_function.proof_generator.invoke_arn
 }
 
-resource "aws_apigatewayv2_route" "root" {
-  api_id    = aws_apigatewayv2_api.proof_generator.id
-  route_key = "GET /"
-
-  target = "integrations/${aws_apigatewayv2_integration.lambda_integration.id}"
-}
-
 resource "aws_apigatewayv2_route" "proof" {
   api_id    = aws_apigatewayv2_api.proof_generator.id
-  route_key = "POST /proof"
+  route_key = "POST /"
 
   target = "integrations/${aws_apigatewayv2_integration.lambda_integration.id}"
 }
@@ -85,7 +78,6 @@ resource "aws_lambda_permission" "api_gateway" {
 
 resource "aws_ecr_repository" "proof_generator" {
   name = "proof-generator"
-
 }
 
 output "aws_ecr_repository_url" {
