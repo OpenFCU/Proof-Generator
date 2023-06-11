@@ -26,7 +26,7 @@
     "time": "12/Mar/2020:19:03:58 +0000",
     "timeEpoch": 1583348638390
   },
-  "body": "{\"student\":{\"name\":\"Boring Bored Ape\",\"id\":\"D1234567\",\"birthday\":\"0098-07-06\",\"registerDate\":\"5432-01-01\",\"degree\":3,\"grade\":5,\"department\":\"Monkey Engineering\",\"nationality\":\"Monkey Kindom\",\"kind\":\"Monkey\"},\"icon\":\"w9Ezljy.png\",\"stamp\":\"v0jirwd.png\"}",
+  "body": "{\"student\":{\"name\":\"初音 未來\",\"id\":\"D3939393\",\"birthday\":\"2006-08-31\",\"registerDate\":\"2022-08-01\",\"degree\":1,\"grade\":1,\"department\":\"資訊工程學系\",\"nationality\":\"Crypton Future Media, INC.\",\"kind\":\"我老婆\"},\"icon\":\"w9Ezljy.png\",\"stamp\":\"GBlqjkd.png\"}",
   "pathParameters": {},
   "isBase64Encoded": false,
   "stageVariables": {}
