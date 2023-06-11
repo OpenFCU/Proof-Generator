@@ -7,7 +7,6 @@ using Amazon.Lambda.Core;
 using Amazon.Lambda.RuntimeSupport;
 using Amazon.Lambda.Serialization.SystemTextJson;
 using ProofGenerator;
-using ProofGenerator.Extension;
 using QuestPDF.Drawing;
 using QuestPDF.Fluent;
 using QuestPDF.Infrastructure;
@@ -64,16 +63,15 @@ async Task<byte[]?> GenerateProofImage(Student student, string iconFileName, str
 
     using (var _client = new HttpClient())
     {
-    if (ImgurPattern().IsMatch(iconFileName))
-    {
-        try { icon = await _client.GetByteArrayAsync($"https://i.imgur.com/{iconFileName}"); } catch (HttpRequestException) { }
-    }
-    if (ImgurPattern().IsMatch(stampFileName))
-    {
-        try { stamp = await _client.GetByteArrayAsync($"https://i.imgur.com/{stampFileName}"); } catch (HttpRequestException) { }
-
-    }
-        
+        Task<byte[]>? iconTask = null, stampTask = null;
+        if (ImgurPattern().IsMatch(iconFileName))
+            try { iconTask = _client.GetByteArrayAsync($"https://i.imgur.com/{iconFileName}"); } catch (HttpRequestException) { }
+        if (ImgurPattern().IsMatch(stampFileName))
+            try { stampTask = _client.GetByteArrayAsync($"https://i.imgur.com/{stampFileName}"); } catch (HttpRequestException) { }
+        if (iconTask != null)
+            icon = await iconTask.WaitAsync(new TimeSpan(0, 0, 3));
+        if (stampTask != null)
+            stamp = await stampTask.WaitAsync(new TimeSpan(0, 0, 3));
     }
 
     var doc = new StudentProofDocument(student, icon, stamp);
