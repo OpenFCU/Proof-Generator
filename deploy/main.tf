@@ -37,6 +37,18 @@ resource "aws_iam_role" "lambda_basic_role" {
 resource "aws_apigatewayv2_api" "proof_generator" {
   name          = "proof_generator"
   protocol_type = "HTTP"
+  cors_configuration {
+    allow_credentials = false
+    allow_headers     = []
+    allow_methods = [
+      "POST",
+    ]
+    allow_origins = [
+      "https://*",
+    ]
+    expose_headers = []
+    max_age        = 3600
+  }
 }
 
 resource "aws_apigatewayv2_stage" "default" {
