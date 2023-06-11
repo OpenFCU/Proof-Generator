@@ -102,7 +102,7 @@ resource "aws_lambda_function" "proof_generator" {
   function_name = "proof_generator"
   role          = aws_iam_role.lambda_basic_role.arn
   package_type  = "Image"
-  image_uri     = "${aws_ecr_repository.proof_generator.repository_url}@sha256:a3df396b3832a1c8290f564828283e86e34de84783cad7ff46a48fb942ea4f00"
-  timeout       = 12
-  memory_size   = 512
+  image_uri     = "${aws_ecr_repository.proof_generator.repository_url}@sha256:<SHA256>"
+  timeout       = 15
+  memory_size   = 256
 }
