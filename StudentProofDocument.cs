@@ -48,10 +48,11 @@ public static class StudentProofDocumentExt
     public static void ComposeStamp(this IContainer container, byte[] stamp)
     {
         container.AlignBottom()
-            .PaddingBottom(5, Unit.Millimetre)
-            .Height(50, Unit.Millimetre)
+            .PaddingBottom(10, Unit.Millimetre)
+            .MaxHeight(50, Unit.Millimetre)
+            .MaxWidth(66, Unit.Millimetre)
             .Image(stamp)
-            .FitHeight();
+            .FitArea();
     }
     public static void ComposeHeader(this IContainer container, byte[]? icon)
     {

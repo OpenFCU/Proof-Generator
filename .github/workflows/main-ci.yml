@@ -47,5 +47,5 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           tags: |
-            docker.io/mikucat0309/proof-generator:1.0.0
-            143348218800.dkr.ecr.ap-northeast-1.amazonaws.com/proof-generator:1.0.0
+            docker.io/mikucat0309/proof-generator:1.1.0
+            143348218800.dkr.ecr.ap-northeast-1.amazonaws.com/proof-generator:1.1.0

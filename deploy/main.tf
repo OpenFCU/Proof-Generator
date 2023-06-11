@@ -37,6 +37,18 @@ resource "aws_iam_role" "lambda_basic_role" {
 resource "aws_apigatewayv2_api" "proof_generator" {
   name          = "proof_generator"
   protocol_type = "HTTP"
+  cors_configuration {
+    allow_credentials = false
+    allow_headers     = []
+    allow_methods = [
+      "POST",
+    ]
+    allow_origins = [
+      "https://*",
+    ]
+    expose_headers = []
+    max_age        = 3600
+  }
 }
 
 resource "aws_apigatewayv2_stage" "default" {
@@ -58,16 +70,9 @@ resource "aws_apigatewayv2_integration" "lambda_integration" {
   integration_uri        = aws_lambda_function.proof_generator.invoke_arn
 }
 
-resource "aws_apigatewayv2_route" "root" {
-  api_id    = aws_apigatewayv2_api.proof_generator.id
-  route_key = "GET /"
-
-  target = "integrations/${aws_apigatewayv2_integration.lambda_integration.id}"
-}
-
 resource "aws_apigatewayv2_route" "proof" {
   api_id    = aws_apigatewayv2_api.proof_generator.id
-  route_key = "POST /proof"
+  route_key = "POST /"
 
   target = "integrations/${aws_apigatewayv2_integration.lambda_integration.id}"
 }
@@ -85,7 +90,6 @@ resource "aws_lambda_permission" "api_gateway" {
 
 resource "aws_ecr_repository" "proof_generator" {
   name = "proof-generator"
-
 }
 
 output "aws_ecr_repository_url" {
@@ -98,7 +102,7 @@ resource "aws_lambda_function" "proof_generator" {
   function_name = "proof_generator"
   role          = aws_iam_role.lambda_basic_role.arn
   package_type  = "Image"
-  image_uri     = "${aws_ecr_repository.proof_generator.repository_url}@sha256:a3df396b3832a1c8290f564828283e86e34de84783cad7ff46a48fb942ea4f00"
-  timeout       = 12
-  memory_size   = 512
+  image_uri     = "${aws_ecr_repository.proof_generator.repository_url}@sha256:<SHA256>"
+  timeout       = 15
+  memory_size   = 256
 }
