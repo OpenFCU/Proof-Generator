@@ -11,7 +11,7 @@ COPY . .
 RUN dotnet build -a $TARGETARCH --no-restore
 
 FROM build AS publish
-RUN dotnet publish -a $TARGETARCH --self-contained false --no-restore -o /app
+RUN dotnet publish -a $TARGETARCH --no-restore -c Release --self-contained false -o /app
 
 FROM docker.io/mikucat0309/lambda-aspnet:7.0-alpine
 LABEL maintainer="mikucat0309 <admin@mikuc.at>"
