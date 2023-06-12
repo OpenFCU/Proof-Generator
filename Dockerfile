@@ -1,23 +1,27 @@
-FROM --platform=$BUILDPLATFORM mcr.microsoft.com/dotnet/sdk:7.0-alpine AS build
+FROM mcr.microsoft.com/dotnet/sdk:7.0-alpine AS build
 
 ARG TARGETARCH
 
 ENV DOTNET_CLI_TELEMETRY_OPTOUT=1
 WORKDIR /source
 
+RUN apk add clang build-base zlib-dev
 COPY *.csproj .
-RUN dotnet restore -a $TARGETARCH
+RUN dotnet restore
 COPY . .
-RUN dotnet build -a $TARGETARCH --no-restore
+RUN dotnet build
 
 FROM build AS publish
-RUN dotnet publish -a $TARGETARCH --no-restore -c Release --self-contained false -o /app
+RUN dotnet publish -c Release -o /app
 
-FROM docker.io/mikucat0309/lambda-aspnet:7.0-alpine
+FROM alpine:3.18
+# FROM mcr.microsoft.com/dotnet/runtime:7.0-alpine
+# FROM docker.io/mikucat0309/lambda-dotnet:7.0-alpine
 LABEL maintainer="mikucat0309 <admin@mikuc.at>"
 
-RUN apk add --no-cache tzdata fontconfig
+WORKDIR /app
+RUN apk add --no-cache tzdata fontconfig libstdc++
 COPY --from=publish /app .
 
 ENV TZ=Asia/Taipei
-CMD [ "ProofGenerator" ]
+ENTRYPOINT [ "./ProofGenerator" ]
