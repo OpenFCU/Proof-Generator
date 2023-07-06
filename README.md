@@ -21,6 +21,8 @@ No more $10
 
 This work is licensed under [AGPLv3](LICENSE)
 
+[![FOSSA Status](https://app.fossa.com/api/projects/custom%2B38258%2Fgithub.com%2FOpenFCU%2FProof-Generator.svg?type=large)](https://app.fossa.com/projects/custom%2B38258%2Fgithub.com%2FOpenFCU%2FProof-Generator)
+
 ## Credits
 
 - Feng Chia University
