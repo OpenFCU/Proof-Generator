@@ -1,4 +1,4 @@
-﻿namespace ProofGenerator;
+namespace ProofGenerator;
 
 public enum Degree
 {
