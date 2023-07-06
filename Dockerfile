@@ -15,8 +15,6 @@ FROM build AS publish
 RUN dotnet publish -c Release -o /app
 
 FROM alpine:3.18
-# FROM mcr.microsoft.com/dotnet/runtime:7.0-alpine
-# FROM docker.io/mikucat0309/lambda-dotnet:7.0-alpine
 LABEL maintainer="mikucat0309 <admin@mikuc.at>"
 
 WORKDIR /app
