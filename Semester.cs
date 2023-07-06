@@ -1,4 +1,4 @@
-﻿namespace ProofGenerator;
+namespace ProofGenerator;
 
 public record Semester(int Year, int Value)
 {
