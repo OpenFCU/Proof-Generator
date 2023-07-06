@@ -1,7 +1,11 @@
 name: Main CI
 
 on:
-  push
+  push:
+    branches:
+      - '*'
+    tags-ignore:
+      - '*'
 
 jobs:
   build:
