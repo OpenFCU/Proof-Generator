@@ -37,12 +37,14 @@ jobs:
           registry: 143348218800.dkr.ecr.ap-northeast-1.amazonaws.com
           username: ${{ secrets.AWS_ACCESS_KEY_ID }}
           password: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      - name: Write release version
+      - 
+        id: write_release_version
+        name: Write release version
         run: |
           VERSION=${{ github.event.release.tag_name }}
           VERSION=${VERSION#v}
           echo Version: $VERSION
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
       -
         name: Build and push
         uses: docker/build-push-action@v4
@@ -52,5 +54,5 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           tags: |
-            docker.io/mikucat0309/proof-generator:${VERSION}
-            143348218800.dkr.ecr.ap-northeast-1.amazonaws.com/proof-generator:${VERSION}
+            docker.io/mikucat0309/proof-generator:${{ steps.write_release_version.outputs.VERSION }}
+            143348218800.dkr.ecr.ap-northeast-1.amazonaws.com/proof-generator:${{ steps.write_release_version.outputs.VERSION }}
