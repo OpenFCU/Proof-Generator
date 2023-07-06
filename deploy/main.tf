@@ -104,5 +104,5 @@ resource "aws_lambda_function" "proof_generator" {
   package_type  = "Image"
   image_uri     = "${aws_ecr_repository.proof_generator.repository_url}@sha256:<SHA256>"
   timeout       = 15
-  memory_size   = 256
+  memory_size   = 1024
 }
