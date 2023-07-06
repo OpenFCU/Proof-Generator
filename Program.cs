@@ -22,7 +22,17 @@ var serializer = new SourceGeneratorLambdaJsonSerializer<HttpApiJsonSerializerCo
     options.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
 });
 
-var BadRequest = new APIGatewayHttpApiV2ProxyResponse
+var PreflightResponse = new APIGatewayHttpApiV2ProxyResponse
+{
+    StatusCode = 200,
+    Headers = new Dictionary<string, string> {
+            {"Access-Control-Allow-Headers", "Content-Type"},
+            {"Access-Control-Allow-Origin", "https://*"},
+            {"Access-Control-Allow-Methods", "OPTIONS,POST"},
+        }
+};
+
+var BadRequestResponse = new APIGatewayHttpApiV2ProxyResponse
 {
     StatusCode = 400,
     Body = "400 Bad Request?"
@@ -30,10 +40,12 @@ var BadRequest = new APIGatewayHttpApiV2ProxyResponse
 
 var handler = async Task<APIGatewayHttpApiV2ProxyResponse> (APIGatewayHttpApiV2ProxyRequest raw, ILambdaContext context) =>
 {
+    if (raw.RequestContext.Http.Method == "OPTIONS") return PreflightResponse;
+    if (raw.Headers["Content-Type"] != "application/json") return BadRequestResponse;
     var ms = new MemoryStream(Encoding.UTF8.GetBytes(raw.Body));
     var request = serializer.Deserialize<Request>(ms);
     var imageBytes = await GenerateProofImage(request.Student, request.Icon, request.Stamp);
-    if (imageBytes == null) return BadRequest;
+    if (imageBytes == null) return BadRequestResponse;
     var payload = Convert.ToBase64String(imageBytes);
     var payloadLength = Encoding.UTF8.GetByteCount(payload);
     return new APIGatewayHttpApiV2ProxyResponse
