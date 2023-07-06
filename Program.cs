@@ -69,9 +69,9 @@ async Task<byte[]?> GenerateProofImage(Student student, string iconFileName, str
         if (ImgurPattern().IsMatch(stampFileName))
             try { stampTask = _client.GetByteArrayAsync($"https://i.imgur.com/{stampFileName}"); } catch (HttpRequestException) { }
         if (iconTask != null)
-            icon = await iconTask.WaitAsync(new TimeSpan(0, 0, 3));
+            icon = await iconTask.WaitAsync(new TimeSpan(0, 0, 5));
         if (stampTask != null)
-            stamp = await stampTask.WaitAsync(new TimeSpan(0, 0, 3));
+            stamp = await stampTask.WaitAsync(new TimeSpan(0, 0, 5));
     }
 
     var doc = new StudentProofDocument(student, icon, stamp);
