@@ -41,7 +41,7 @@ var BadRequestResponse = new APIGatewayHttpApiV2ProxyResponse
 var handler = async Task<APIGatewayHttpApiV2ProxyResponse> (APIGatewayHttpApiV2ProxyRequest raw, ILambdaContext context) =>
 {
     if (raw.RequestContext.Http.Method == "OPTIONS") return PreflightResponse;
-    if (raw.Headers["Content-Type"] != "application/json") return BadRequestResponse;
+    if (raw.Headers["content-type"] != "application/json") return BadRequestResponse;
     var ms = new MemoryStream(Encoding.UTF8.GetBytes(raw.Body));
     var request = serializer.Deserialize<Request>(ms);
     var imageBytes = await GenerateProofImage(request.Student, request.Icon, request.Stamp);
