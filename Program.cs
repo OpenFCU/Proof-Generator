@@ -11,6 +11,17 @@ using QuestPDF.Drawing;
 using QuestPDF.Fluent;
 using QuestPDF.Infrastructure;
 
+QuestPDF.Settings.License = LicenseType.Community;
+
+FontManager.RegisterFontWithCustomName("Noto Sans TC", File.OpenRead("fonts/NotoSansTC-Medium.otf"));
+FontManager.RegisterFontWithCustomName("TW-Kai", File.OpenRead("fonts/TW-Kai-98_1.ttf"));
+
+var imgurTimeLimitSec = 5;
+int.TryParse(Environment.GetEnvironmentVariable("IMGUR_TIMELIMIT"), out imgurTimeLimitSec); 
+var imgurTimeLimit = new TimeSpan(0, 0, imgurTimeLimitSec);
+
+Directory.CreateDirectory("/tmp/generated");
+
 var PreflightResponse = new APIGatewayHttpApiV2ProxyResponse
 {
     StatusCode = 200,
@@ -76,13 +87,6 @@ var handler = async Task<APIGatewayHttpApiV2ProxyResponse> (APIGatewayHttpApiV2P
     return NotFoundResponse;
 };
 
-QuestPDF.Settings.License = LicenseType.Community;
-
-FontManager.RegisterFontWithCustomName("Noto Sans TC", File.OpenRead("fonts/NotoSansTC-Medium.otf"));
-FontManager.RegisterFontWithCustomName("TW-Kai", File.OpenRead("fonts/TW-Kai-98_1.ttf"));
-
-Directory.CreateDirectory("/tmp/generated");
-
 await LambdaBootstrapBuilder.Create(handler, serializer)
         .Build()
         .RunAsync();
@@ -113,9 +117,9 @@ async Task<string?> GenerateProofImage(Student student, string iconFileName, str
         if (ImgurPattern().IsMatch(stampFileName))
             try { stampTask = _client.GetByteArrayAsync($"https://i.imgur.com/{stampFileName}"); } catch (HttpRequestException) { }
         if (iconTask != null)
-            icon = await iconTask.WaitAsync(new TimeSpan(0, 0, 5));
+            icon = await iconTask.WaitAsync(imgurTimeLimit);
         if (stampTask != null)
-            stamp = await stampTask.WaitAsync(new TimeSpan(0, 0, 5));
+            stamp = await stampTask.WaitAsync(imgurTimeLimit);
     }
 
     var doc = new StudentProofDocument(student, icon, stamp);
