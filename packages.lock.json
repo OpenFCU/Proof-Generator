@@ -1,0 +1,158 @@
+{
+  "version": 1,
+  "dependencies": {
+    "net7.0": {
+      "Amazon.Lambda.APIGatewayEvents": {
+        "type": "Direct",
+        "requested": "[2.6.0, )",
+        "resolved": "2.6.0",
+        "contentHash": "IpBKoaQD7cFb38XfoJlyv/+gnYzn+r8Y54sqyubbsPNEMujfedUNnrVgFKW5STVKzbPBw2orQsWqzdp3TvxWQA=="
+      },
+      "Amazon.Lambda.Core": {
+        "type": "Direct",
+        "requested": "[2.1.0, )",
+        "resolved": "2.1.0",
+        "contentHash": "ok06UhfBZw6j6+PhiJR9C0EOMuJvnq8rMCHVkaFmPFrlI/q447ukwGZQKaAKqodV+MNTfpb/iPxjgUPVbSlVVw=="
+      },
+      "Amazon.Lambda.RuntimeSupport": {
+        "type": "Direct",
+        "requested": "[1.8.8, )",
+        "resolved": "1.8.8",
+        "contentHash": "NOaOTDteAUGwSlCAfzn2GA7y3x49Jg2IutKZGyn+4MMvtNGTm6K3MCYFfXDgZ0n1nFvNz9hmNZiEGOkPz/xPYg==",
+        "dependencies": {
+          "Amazon.Lambda.Core": "2.1.0"
+        }
+      },
+      "Amazon.Lambda.Serialization.SystemTextJson": {
+        "type": "Direct",
+        "requested": "[2.3.1, )",
+        "resolved": "2.3.1",
+        "contentHash": "7dGGgikMlEz72rGqeDwQEIxq+O8RDEdR4GH2S7hfZ8uzv5lyWVDuP2urV6MyD6APJ2WVHRwJlV74bB+XJncQpw==",
+        "dependencies": {
+          "Amazon.Lambda.Core": "2.1.0"
+        }
+      },
+      "AWSSDK.Core": {
+        "type": "Direct",
+        "requested": "[3.7.107.4, )",
+        "resolved": "3.7.107.4",
+        "contentHash": "/MDpzuWhdKxP0P7/K+aDwqJyeLE6YFzwzSgH6nmSUn+jz73ydFIHAZ08V6IYCMGSjb8N/uqAk7IChJSl69IbsA=="
+      },
+      "HarfBuzzSharp.NativeAssets.Linux": {
+        "type": "Direct",
+        "requested": "[2.8.2.3, )",
+        "resolved": "2.8.2.3",
+        "contentHash": "Qu1yJSHEN7PD3+fqfkaClnORWN5e2xJ2Xoziz/GUi/oBT1Z+Dp2oZeiONKP6NFltboSOBkvH90QuOA6YN/U1zg==",
+        "dependencies": {
+          "HarfBuzzSharp": "2.8.2.3"
+        }
+      },
+      "QuestPDF": {
+        "type": "Direct",
+        "requested": "[2023.5.2, )",
+        "resolved": "2023.5.2",
+        "contentHash": "vjF2eM2arZov1wFITTQK3DcwHod8S+HJTBYOQRmsv5G1ESAAdwcHq12ohC4qBmHbxSVc+X9TW2Bua3w/vxEOvA==",
+        "dependencies": {
+          "SkiaSharp": "2.88.3",
+          "SkiaSharp.HarfBuzz": "2.88.3"
+        }
+      },
+      "SkiaSharp.NativeAssets.Linux": {
+        "type": "Direct",
+        "requested": "[2.88.3, )",
+        "resolved": "2.88.3",
+        "contentHash": "wz29evZVWRqN7WHfenFwQIgqtr8f5vHCutcl1XuhWrHTRZeaIBk7ngjhyHpjUMcQxtIEAdq34ZRvMQshsBYjqg==",
+        "dependencies": {
+          "SkiaSharp": "2.88.3"
+        }
+      },
+      "HarfBuzzSharp": {
+        "type": "Transitive",
+        "resolved": "2.8.2.3",
+        "contentHash": "8MwXm9J4dXHuTdzPo29nHgDbt4+6P+RrPrH/qrxcERf29cpLlFbjvP3eFPwHmdUrl4KL2SHEZi2ZuQ5ndeIL1w==",
+        "dependencies": {
+          "HarfBuzzSharp.NativeAssets.Win32": "2.8.2.3",
+          "HarfBuzzSharp.NativeAssets.macOS": "2.8.2.3"
+        }
+      },
+      "HarfBuzzSharp.NativeAssets.macOS": {
+        "type": "Transitive",
+        "resolved": "2.8.2.3",
+        "contentHash": "uwz9pB3hMuxzI/bSkjVrsOJH7Wo1L+0Md5ZmEMDM/j7xDHtR9d3mfg/CfxhMIcTiUC4JgX49FZK0y2ojgu1dww=="
+      },
+      "HarfBuzzSharp.NativeAssets.Win32": {
+        "type": "Transitive",
+        "resolved": "2.8.2.3",
+        "contentHash": "Wo6QpE4+a+PFVdfIBoLkLr4wq2uC0m9TZC8FAfy4ZnLsUc10WL0Egk9EBHHhDCeokNOXDse5YtvuTYtS/rbHfg=="
+      },
+      "SkiaSharp": {
+        "type": "Transitive",
+        "resolved": "2.88.3",
+        "contentHash": "GG8X3EdfwyBfwjl639UIiOVOKEdeoqDgYrz0P1MUCnefXt9cofN+AK8YB/v1+5cLMr03ieWCQdDmPqnFIzSxZw==",
+        "dependencies": {
+          "SkiaSharp.NativeAssets.Win32": "2.88.3",
+          "SkiaSharp.NativeAssets.macOS": "2.88.3"
+        }
+      },
+      "SkiaSharp.HarfBuzz": {
+        "type": "Transitive",
+        "resolved": "2.88.3",
+        "contentHash": "hH6v4ltTb34eqn5tx1qLSAN7O+ppZCV5DnZw0FR7RwxXYqCeQYbBNgsaPyrZ1nkvtCDD1pH79taeO6SvqG+IAg==",
+        "dependencies": {
+          "HarfBuzzSharp": "2.8.2.3",
+          "SkiaSharp": "2.88.3"
+        }
+      },
+      "SkiaSharp.NativeAssets.macOS": {
+        "type": "Transitive",
+        "resolved": "2.88.3",
+        "contentHash": "CEbWAXMGFkPV3S1snBKK7jEG3+xud/9kmSAhu0BEUKKtlMdxx+Qal0U9bntQREM9QpqP5xLWZooodi8IlV8MEg=="
+      },
+      "SkiaSharp.NativeAssets.Win32": {
+        "type": "Transitive",
+        "resolved": "2.88.3",
+        "contentHash": "MU4ASL8VAbTv5vSw1PoiWjjjpjtGhWtFYuJnrN4sNHFCePb2ohQij9JhSdqLLxk7RpRtWPdV93fbA53Pt+J0yw=="
+      }
+    },
+    "net7.0/linux-x64": {
+      "HarfBuzzSharp.NativeAssets.Linux": {
+        "type": "Direct",
+        "requested": "[2.8.2.3, )",
+        "resolved": "2.8.2.3",
+        "contentHash": "Qu1yJSHEN7PD3+fqfkaClnORWN5e2xJ2Xoziz/GUi/oBT1Z+Dp2oZeiONKP6NFltboSOBkvH90QuOA6YN/U1zg==",
+        "dependencies": {
+          "HarfBuzzSharp": "2.8.2.3"
+        }
+      },
+      "SkiaSharp.NativeAssets.Linux": {
+        "type": "Direct",
+        "requested": "[2.88.3, )",
+        "resolved": "2.88.3",
+        "contentHash": "wz29evZVWRqN7WHfenFwQIgqtr8f5vHCutcl1XuhWrHTRZeaIBk7ngjhyHpjUMcQxtIEAdq34ZRvMQshsBYjqg==",
+        "dependencies": {
+          "SkiaSharp": "2.88.3"
+        }
+      },
+      "HarfBuzzSharp.NativeAssets.macOS": {
+        "type": "Transitive",
+        "resolved": "2.8.2.3",
+        "contentHash": "uwz9pB3hMuxzI/bSkjVrsOJH7Wo1L+0Md5ZmEMDM/j7xDHtR9d3mfg/CfxhMIcTiUC4JgX49FZK0y2ojgu1dww=="
+      },
+      "HarfBuzzSharp.NativeAssets.Win32": {
+        "type": "Transitive",
+        "resolved": "2.8.2.3",
+        "contentHash": "Wo6QpE4+a+PFVdfIBoLkLr4wq2uC0m9TZC8FAfy4ZnLsUc10WL0Egk9EBHHhDCeokNOXDse5YtvuTYtS/rbHfg=="
+      },
+      "SkiaSharp.NativeAssets.macOS": {
+        "type": "Transitive",
+        "resolved": "2.88.3",
+        "contentHash": "CEbWAXMGFkPV3S1snBKK7jEG3+xud/9kmSAhu0BEUKKtlMdxx+Qal0U9bntQREM9QpqP5xLWZooodi8IlV8MEg=="
+      },
+      "SkiaSharp.NativeAssets.Win32": {
+        "type": "Transitive",
+        "resolved": "2.88.3",
+        "contentHash": "MU4ASL8VAbTv5vSw1PoiWjjjpjtGhWtFYuJnrN4sNHFCePb2ohQij9JhSdqLLxk7RpRtWPdV93fbA53Pt+J0yw=="
+      }
+    }
+  }
+}

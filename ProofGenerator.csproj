@@ -5,6 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <AssemblyName>ProofGenerator</AssemblyName>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
     <AWSProjectType>Lambda</AWSProjectType>
     <PublishAot>true</PublishAot>
     <OptimizationPreference>Speed</OptimizationPreference>
@@ -22,9 +23,9 @@
     <PackageReference Include="Amazon.Lambda.RuntimeSupport" Version="1.8.8" />
     <PackageReference Include="Amazon.Lambda.Serialization.SystemTextJson" Version="2.3.1" />
     <PackageReference Include="AWSSDK.Core" Version="3.7.107.4" />
-    <PackageReference Include="HarfBuzzSharp.NativeAssets.Linux" Version="2.8.2.3" />
     <PackageReference Include="QuestPDF" Version="2023.5.2" />
-    <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="2.88.3" />
+    <PackageReference Include="HarfBuzzSharp.NativeAssets.Linux" Version="2.8.2.3" />
+    <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="2.88.3" />
     <Content Include="fonts/**">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

@@ -2,30 +2,21 @@ name: Main CI
 
 on:
   push:
-    branches:
-      - '*'
-    tags-ignore:
-      - '*'
+    branches-ignore:
+      # all commits merged from pull requests
+      - 'main'
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      DOTNET_CLI_TELEMETRY_OPTOUT: true
     steps:
+      - uses: actions/checkout@v3
       -
-        name: Checkout
-        uses: actions/checkout@v3
-      -
-        name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
-      -
-        name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-      -
-        name: Build test
-        uses: docker/build-push-action@v4
+        uses: actions/setup-dotnet@v3
         with:
-          context: .
-          push: false
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-          tags: test/proof-generator:latest
+          dotnet-version: '7.0.x'
+          cache: true
+      - run: dotnet restore --locked-mode
+      - run: dotnet publish -c Debug
