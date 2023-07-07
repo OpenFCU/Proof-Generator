@@ -8,7 +8,7 @@ terraform {
 }
 
 provider "aws" {
-  region     = "ap-northeast-1"
+  region     = var.aws_region
   access_key = var.aws_access_key
   secret_key = var.aws_secret_key
 }
@@ -32,23 +32,67 @@ resource "aws_iam_role" "lambda_basic_role" {
   managed_policy_arns = ["arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"]
 }
 
+# S3
+
+resource "aws_s3_bucket" "proof_generator" {
+  bucket = var.s3_bucket_name
+}
+
+resource "aws_s3_object" "index_html" {
+  bucket       = aws_s3_bucket.proof_generator.id
+  key          = "index.html"
+  source       = "../static/index.html"
+  etag         = filemd5("../static/index.html")
+  content_type = "text/html"
+}
+
+resource "aws_s3_object" "main_css" {
+  bucket       = aws_s3_bucket.proof_generator.id
+  key          = "main.css"
+  source       = "../static/main.css"
+  etag         = filemd5("../static/main.css")
+  content_type = "text/css"
+}
+
+resource "aws_s3_bucket_website_configuration" "website_config" {
+  bucket = aws_s3_bucket.proof_generator.id
+  index_document {
+    suffix = "index.html"
+  }
+}
+
+data "aws_iam_policy_document" "allow_public_access" {
+  statement {
+    sid       = "PublicReadGetObject"
+    effect    = "Allow"
+    actions   = ["s3:GetObject"]
+    resources = ["${aws_s3_bucket.proof_generator.arn}/*"]
+    principals {
+      type        = "*"
+      identifiers = ["*"]
+    }
+  }
+}
+
+resource "aws_s3_bucket_policy" "allow_public_access" {
+  bucket = aws_s3_bucket.proof_generator.id
+  policy = data.aws_iam_policy_document.allow_public_access.json
+}
+
+resource "aws_s3_bucket_public_access_block" "public_access_block" {
+  bucket                  = aws_s3_bucket.proof_generator.id
+  block_public_acls       = false
+  block_public_policy     = false
+  ignore_public_acls      = false
+  restrict_public_buckets = false
+}
+
 # API Gateway v2
 
 resource "aws_apigatewayv2_api" "proof_generator" {
-  name          = "proof_generator"
-  protocol_type = "HTTP"
-  cors_configuration {
-    allow_credentials = false
-    allow_headers     = []
-    allow_methods = [
-      "POST",
-    ]
-    allow_origins = [
-      "https://*",
-    ]
-    expose_headers = []
-    max_age        = 3600
-  }
+  name                         = "proof_generator"
+  protocol_type                = "HTTP"
+  disable_execute_api_endpoint = true
 }
 
 resource "aws_apigatewayv2_stage" "default" {
@@ -56,9 +100,14 @@ resource "aws_apigatewayv2_stage" "default" {
   name        = "$default"
   auto_deploy = true
 
+  default_route_settings {
+    throttling_rate_limit  = 5
+    throttling_burst_limit = 5
+  }
+
   access_log_settings {
-    destination_arn = "arn:aws:logs:ap-northeast-1:143348218800:log-group:http_api_log"
-    format          = "$context.identity.sourceIp - - [$context.requestTime] \"$context.httpMethod $context.routeKey $context.protocol\" $context.status $context.responseLength $context.requestId | $context.integrationErrorMessage"
+    destination_arn = aws_cloudwatch_log_group.apigateway_log.arn
+    format          = "$context.identity.sourceIp - - [$context.requestTime] \"$context.routeKey $context.protocol\" $context.status $context.responseLength $context.requestId | $context.integrationErrorMessage"
   }
 }
 
@@ -70,20 +119,56 @@ resource "aws_apigatewayv2_integration" "lambda_integration" {
   integration_uri        = aws_lambda_function.proof_generator.invoke_arn
 }
 
-resource "aws_apigatewayv2_route" "proof" {
+resource "aws_apigatewayv2_route" "cors_preflight" {
+  api_id    = aws_apigatewayv2_api.proof_generator.id
+  route_key = "OPTIONS /"
+
+  target = "integrations/${aws_apigatewayv2_integration.lambda_integration.id}"
+}
+
+resource "aws_apigatewayv2_route" "generate" {
   api_id    = aws_apigatewayv2_api.proof_generator.id
   route_key = "POST /"
 
   target = "integrations/${aws_apigatewayv2_integration.lambda_integration.id}"
 }
 
-resource "aws_lambda_permission" "api_gateway" {
+resource "aws_apigatewayv2_route" "download" {
+  api_id    = aws_apigatewayv2_api.proof_generator.id
+  route_key = "GET /generated"
+
+  target = "integrations/${aws_apigatewayv2_integration.lambda_integration.id}"
+}
+
+resource "aws_apigatewayv2_integration" "s3_proxy" {
+  api_id             = aws_apigatewayv2_api.proof_generator.id
+  integration_type   = "HTTP_PROXY"
+  connection_type    = "INTERNET"
+  integration_method = "GET"
+  integration_uri    = "http://${aws_s3_bucket_website_configuration.website_config.website_endpoint}/{proxy}"
+}
+
+resource "aws_apigatewayv2_route" "static_files" {
+  api_id    = aws_apigatewayv2_api.proof_generator.id
+  route_key = "GET /{proxy+}"
+
+  target = "integrations/${aws_apigatewayv2_integration.s3_proxy.id}"
+}
+
+resource "aws_lambda_permission" "apigateway" {
   statement_id  = "AllowExecutionFromAPIGateway"
   action        = "lambda:InvokeFunction"
   function_name = aws_lambda_function.proof_generator.function_name
   principal     = "apigateway.amazonaws.com"
 
   source_arn = "${aws_apigatewayv2_api.proof_generator.execution_arn}/*/*"
+}
+
+# CloudWatch
+
+resource "aws_cloudwatch_log_group" "apigateway_log" {
+  name              = "apigateway_log"
+  retention_in_days = 30
 }
 
 # ECR
@@ -102,7 +187,7 @@ resource "aws_lambda_function" "proof_generator" {
   function_name = "proof_generator"
   role          = aws_iam_role.lambda_basic_role.arn
   package_type  = "Image"
-  image_uri     = "${aws_ecr_repository.proof_generator.repository_url}@sha256:<SHA256>"
+  image_uri     = "${aws_ecr_repository.proof_generator.repository_url}:<tag>"
   timeout       = 15
   memory_size   = 1024
 }
