@@ -18,5 +18,5 @@ jobs:
         with:
           dotnet-version: '7.0.x'
           cache: true
-      - run: dotnet restore --locked-mode
-      - run: dotnet publish -c Debug
+      - run: dotnet restore -r linux-x64 --locked-mode
+      - run: dotnet publish -r linux-x64 -c Debug
