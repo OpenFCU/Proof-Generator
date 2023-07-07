@@ -16,8 +16,8 @@ QuestPDF.Settings.License = LicenseType.Community;
 FontManager.RegisterFontWithCustomName("Noto Sans TC", File.OpenRead("fonts/NotoSansTC-Medium.otf"));
 FontManager.RegisterFontWithCustomName("TW-Kai", File.OpenRead("fonts/TW-Kai-98_1.ttf"));
 
-var imgurTimeLimitSec = 5;
-int.TryParse(Environment.GetEnvironmentVariable("IMGUR_TIMELIMIT"), out imgurTimeLimitSec); 
+int outInt;
+var imgurTimeLimitSec = int.TryParse(Environment.GetEnvironmentVariable("IMGUR_TIMELIMIT"), out outInt) ? outInt : 5;
 var imgurTimeLimit = new TimeSpan(0, 0, imgurTimeLimitSec);
 
 Directory.CreateDirectory("/tmp/generated");
