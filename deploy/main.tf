@@ -37,18 +37,7 @@ resource "aws_iam_role" "lambda_basic_role" {
 resource "aws_apigatewayv2_api" "proof_generator" {
   name          = "proof_generator"
   protocol_type = "HTTP"
-  cors_configuration {
-    allow_credentials = false
-    allow_headers     = []
-    allow_methods = [
-      "POST",
-    ]
-    allow_origins = [
-      "https://*",
-    ]
-    expose_headers = []
-    max_age        = 3600
-  }
+  disable_execute_api_endpoint = true
 }
 
 resource "aws_apigatewayv2_stage" "default" {
@@ -70,9 +59,23 @@ resource "aws_apigatewayv2_integration" "lambda_integration" {
   integration_uri        = aws_lambda_function.proof_generator.invoke_arn
 }
 
-resource "aws_apigatewayv2_route" "proof" {
+resource "aws_apigatewayv2_route" "cors_preflight" {
+  api_id    = aws_apigatewayv2_api.proof_generator.id
+  route_key = "OPTIONS /"
+
+  target = "integrations/${aws_apigatewayv2_integration.lambda_integration.id}"
+}
+
+resource "aws_apigatewayv2_route" "generate" {
   api_id    = aws_apigatewayv2_api.proof_generator.id
   route_key = "POST /"
+
+  target = "integrations/${aws_apigatewayv2_integration.lambda_integration.id}"
+}
+
+resource "aws_apigatewayv2_route" "download" {
+  api_id    = aws_apigatewayv2_api.proof_generator.id
+  route_key = "GET /generated"
 
   target = "integrations/${aws_apigatewayv2_integration.lambda_integration.id}"
 }
@@ -102,7 +105,7 @@ resource "aws_lambda_function" "proof_generator" {
   function_name = "proof_generator"
   role          = aws_iam_role.lambda_basic_role.arn
   package_type  = "Image"
-  image_uri     = "${aws_ecr_repository.proof_generator.repository_url}@sha256:<SHA256>"
+  image_uri     = "${aws_ecr_repository.proof_generator.repository_url}:<tag>"
   timeout       = 15
   memory_size   = 1024
 }
