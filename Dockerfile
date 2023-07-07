@@ -6,6 +6,7 @@ WORKDIR /source
 RUN apk add clang build-base zlib-dev
 COPY *.csproj .
 RUN dotnet restore -r linux-x64 --locked-mode
+COPY . .
 
 FROM build AS publish
 RUN dotnet publish -r linux-x64 -c Release -o /app
