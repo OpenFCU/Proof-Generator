@@ -41,16 +41,16 @@ resource "aws_s3_bucket" "proof_generator" {
 resource "aws_s3_object" "index_html" {
   bucket       = aws_s3_bucket.proof_generator.id
   key          = "index.html"
-  source       = "../static/index.html"
-  etag         = filemd5("../static/index.html")
+  source       = "../static/src/index.html"
+  etag         = filemd5("../static/src/index.html")
   content_type = "text/html"
 }
 
-resource "aws_s3_object" "main_css" {
+resource "aws_s3_object" "style_css" {
   bucket       = aws_s3_bucket.proof_generator.id
-  key          = "main.css"
-  source       = "../static/main.css"
-  etag         = filemd5("../static/main.css")
+  key          = "style.css"
+  source       = "../static/src/style.css"
+  etag         = filemd5("../static/src/style.css")
   content_type = "text/css"
 }
 

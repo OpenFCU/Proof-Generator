@@ -1,0 +1,110 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>逢甲在學證明格式線上產生器</title>
+    <link href="style.css" rel="stylesheet">
+    <script type="text/javascript">
+      async function submitJSON() {
+        const spinner = document.getElementById("spinner1");
+        spinner.classList.add("loading");
+        const resp = await fetch('./', {
+          method: 'post',
+          headers: new Headers({'Content-Type': 'application/json'}),
+          body: JSON.stringify({
+            "student": {
+              "name": document.getElementById('name').value,
+              "id": document.getElementById('id').value,
+              "birthday": document.getElementById('birthday').value,
+              "registerDate": document.getElementById('registerDate').value,
+              "degree": parseInt(document.getElementById('degree').value),
+              "grade": parseInt(document.getElementById('grade').value),
+              "department": document.getElementById('department').value,
+              "nationality": document.getElementById('nationality').value,
+              "kind": document.getElementById('kind').value,
+            },
+            "icon": document.getElementById('icon').value,
+            "stamp": document.getElementById('stamp').value
+          })
+        });
+        window.location.href = (await resp.json())["path"];
+      }
+      </script>
+  </head>
+  <body class="dark:bg-gray-800 dark:text-white">
+    <div class="w-screen h-screen flex flex-col items-center">
+      <h1 class="text-3xl text-center font-bold break-keep px-4 py-8">逢甲在學證明格式 線上產生器</h1>
+      <div class="w-full max-w-3xl px-4 pb-4 grid grid-cols-1 sm:grid-cols-2 gap-x-4 sm:gap-x-8 gap-y-3">
+        <div>
+          <label for="name">姓名</label>
+          <br />
+          <input name="name" id="name" type="text" class="field" />
+        </div>
+        <div>
+          <label for="id">學號</label>
+          <br />
+          <input name="id" id="id" type="text" class="field" />
+        </div>
+        <div>
+          <label for="birthday">出生日期</label>
+          <br />
+          <input name="birthday" id="birthday" type="date" value="1970-01-01" class="field" />
+        </div>
+        <div>
+          <label for="nationality">國籍</label>
+          <br />
+          <input name="nationality" id="nationality" type="text" value="中華民國" class="field" />
+        </div>
+        <div>
+          <label for="kind">入學身分</label>
+          <br />
+          <input name="kind" id="kind" type="text" value="一般生" class="field" />
+        </div>
+        <div>
+          <label for="registerDate">入學日期</label>
+          <br />
+          <input name="registerDate" id="registerDate" type="date" value="2022-08-01" class="field" />
+        </div>
+        <div class="grid grid-cols-2 gap-x-4">
+          <div>
+            <label for="degree">學制</label>
+            <br />
+            <select name="degree" id="degree" class="field">
+              <option value="1" selected>學士班</option>
+              <option value="2">碩士班</option>
+              <option value="3">博士班</option>
+            </select>
+          </div>
+          <div>
+            <label for="grade">年級</label>
+            <br />
+            <input name="grade" id="grade" type="number" value="1" class="field" />
+          </div>
+        </div>
+        <div>
+          <label for="department">系所</label>
+          <br />
+          <input name="department" id="department" type="text" class="field" />
+        </div>
+        <div>
+          <label for="icon">校徽</label>
+          <br />
+          <input name="icon" id="icon" type="text" value="w9Ezljy.png" class="field" />
+        </div>
+        <div>
+          <label for="stamp">戳章</label>
+          <br />
+          <input name="stamp" id="stamp" type="text" value="v0jirwd.png" class="field" />
+        </div>
+        <div class="col-span-full h-8"></div>
+      </div>
+    </div>
+    <footer>
+      <button type="button" onclick="submitJSON()" class="w-full py-2 mt-8 rounded bg-sky-200 dark:bg-slate-600 hover:bg-blue-300 dark:hover:bg-slate-500">
+        <div id="spinner1" class="ml-auto mr-2 inline-block h-4 w-4 animate-spin rounded-full border-2 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite] spinner" role="status"></div>
+        <strong>產生</strong>
+      </button>
+    </footer>
+  </body>
+</html>
