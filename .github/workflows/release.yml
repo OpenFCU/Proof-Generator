@@ -53,8 +53,6 @@ jobs:
           file: CLR.dockerfile
           push: true
           provenance: false
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
           tags: |
             docker.io/mikucat0309/proof-generator:${{ steps.write_release_version.outputs.VERSION }}
             143348218800.dkr.ecr.ap-northeast-1.amazonaws.com/proof-generator:${{ steps.write_release_version.outputs.VERSION }}
@@ -66,8 +64,6 @@ jobs:
           file: NativeAOT.dockerfile
           push: true
           provenance: false
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
           tags: |
             docker.io/mikucat0309/proof-generator:${{ steps.write_release_version.outputs.VERSION }}-aot
             143348218800.dkr.ecr.ap-northeast-1.amazonaws.com/proof-generator:${{ steps.write_release_version.outputs.VERSION }}-aot
