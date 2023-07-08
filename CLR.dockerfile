@@ -9,7 +9,7 @@ RUN dotnet restore
 COPY . .
 
 FROM build AS publish
-RUN dotnet publish --no-restore -c Release -o /app -p PublishAot=false
+RUN dotnet publish -c Release -o /app -p PublishAot=false
 
 FROM mcr.microsoft.com/dotnet/runtime:7.0-alpine
 LABEL maintainer="mikucat0309 <admin@mikuc.at>"

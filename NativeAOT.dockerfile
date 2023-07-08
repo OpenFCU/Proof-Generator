@@ -9,7 +9,7 @@ RUN dotnet restore
 COPY . .
 
 FROM build AS publish
-RUN dotnet publish --no-restore -c Release -o /app
+RUN dotnet publish -c Release -o /app
 
 FROM alpine:3.18
 LABEL maintainer="mikucat0309 <admin@mikuc.at>"
