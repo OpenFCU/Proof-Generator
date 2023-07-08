@@ -46,7 +46,20 @@ jobs:
           echo Version: $VERSION
           echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
       -
-        name: Build and push
+        name: Build CLR image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: CLR.dockerfile
+          push: true
+          provenance: false
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          tags: |
+            docker.io/mikucat0309/proof-generator:${{ steps.write_release_version.outputs.VERSION }}
+            143348218800.dkr.ecr.ap-northeast-1.amazonaws.com/proof-generator:${{ steps.write_release_version.outputs.VERSION }}
+      -
+        name: Build Native AOT image
         uses: docker/build-push-action@v4
         with:
           context: .
@@ -56,5 +69,5 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           tags: |
-            docker.io/mikucat0309/proof-generator:${{ steps.write_release_version.outputs.VERSION }}
-            143348218800.dkr.ecr.ap-northeast-1.amazonaws.com/proof-generator:${{ steps.write_release_version.outputs.VERSION }}
+            docker.io/mikucat0309/proof-generator:${{ steps.write_release_version.outputs.VERSION }}-aot
+            143348218800.dkr.ecr.ap-northeast-1.amazonaws.com/proof-generator:${{ steps.write_release_version.outputs.VERSION }}-aot
