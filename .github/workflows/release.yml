@@ -50,6 +50,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: .
+          file: NativeAOT.dockerfile
           push: true
           provenance: false
           cache-from: type=gha

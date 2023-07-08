@@ -5,6 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <AssemblyName>ProofGenerator</AssemblyName>
+    <PublishReadyToRun>true</PublishReadyToRun>
     <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
     <AWSProjectType>Lambda</AWSProjectType>
     <PublishAot>true</PublishAot>
