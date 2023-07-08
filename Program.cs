@@ -68,19 +68,23 @@ var handler = async Task<APIGatewayHttpApiV2ProxyResponse> (APIGatewayHttpApiV2P
 
     if (http.Method == "POST" && http.Path == "/")
     {
-        var ms = new MemoryStream(Encoding.UTF8.GetBytes(raw.Body));
-        var request = serializer.Deserialize<Request>(ms);
-        ms.Seek(0, SeekOrigin.Begin);
-        var hash = Convert.ToHexString(await md5.ComputeHashAsync(ms));
+        var requestStream = new MemoryStream(Encoding.UTF8.GetBytes(raw.Body));
+        var request = serializer.Deserialize<Request>(requestStream);
+        requestStream.Seek(0, SeekOrigin.Begin);
+        var hash = Convert.ToHexString(await md5.ComputeHashAsync(requestStream));
         var generatedPath = await GenerateProofImage(request.Student, request.Icon, request.Stamp, hash);
         if (generatedPath == null) return BadRequestResponse;
 
+        var responseStream = new MemoryStream(64);
+        serializer.Serialize<Response>(new Response(generatedPath), responseStream);
+
         return new APIGatewayHttpApiV2ProxyResponse
         {
-            StatusCode = 303,
+            StatusCode = 200,
             Headers = new Dictionary<string, string> {
-                {"Location", generatedPath},
-            }
+                {"Content-Type", "application/json"},
+            },
+            Body = Encoding.UTF8.GetString(responseStream.ToArray()),
         };
     }
 
@@ -129,7 +133,7 @@ async Task<string?> GenerateProofImage(Student student, string iconFileName, str
         RasterDpi = 144
     };
     await Task.Run(() => doc.GenerateImages(x => (x == 0) ? info.FullName : "/dev/null", settings));
-    return httpPath;
+    return $".{httpPath}";
 }
 
 async Task<APIGatewayHttpApiV2ProxyResponse> GetGeneratedFileAsync(string path)
