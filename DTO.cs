@@ -5,3 +5,7 @@ public record Request(
     string Icon,
     string Stamp
 );
+
+public record Response(
+    string path
+);

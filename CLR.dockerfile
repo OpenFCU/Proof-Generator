@@ -9,13 +9,13 @@ RUN dotnet restore
 COPY . .
 
 FROM build AS publish
-RUN dotnet publish -c Release -o /app
+RUN dotnet publish --no-restore -c Release -o /app -p PublishAot=false
 
-FROM alpine:3.18
+FROM mcr.microsoft.com/dotnet/runtime:7.0-alpine
 LABEL maintainer="mikucat0309 <admin@mikuc.at>"
 
 WORKDIR /app
-RUN apk add --no-cache tzdata fontconfig libstdc++
+RUN apk add --no-cache tzdata fontconfig
 COPY --from=publish /app .
 
 ENV TZ=Asia/Taipei

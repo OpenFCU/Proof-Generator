@@ -135,7 +135,7 @@ resource "aws_apigatewayv2_route" "generate" {
 
 resource "aws_apigatewayv2_route" "download" {
   api_id    = aws_apigatewayv2_api.proof_generator.id
-  route_key = "GET /generated"
+  route_key = "GET /generated/{proxy+}"
 
   target = "integrations/${aws_apigatewayv2_integration.lambda_integration.id}"
 }

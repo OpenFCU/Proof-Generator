@@ -11,13 +11,10 @@
       <h1 class="text-3xl font-bold p-8"> 逢甲在學證明格式線上產生器 </h1>
       <script type="text/javascript">
         async function submitJSON() {
-          fetch('https://proof.fcu.mikuc.at/', {
+          fetch('./', {
             method: 'post',
             mode: 'cors',
-            redirect: 'manual',
-            headers: new Headers({
-              'Content-Type': 'application/json'
-            }),
+            headers: new Headers({'Content-Type': 'application/json'}),
             body: JSON.stringify({
               "student": {
                 "name": document.getElementById('name').value,
@@ -33,10 +30,8 @@
               "icon": document.getElementById('icon').value,
               "stamp": document.getElementById('stamp').value
             })
-          }).then(x => {
-            console.log(x.url);
-            window.location.href = x.url;
-          });
+          })
+          .then(resp => window.location.href = resp.json()["path"]);
         }
       </script>
       <div class="w-full max-w-xl grid grid-cols-2 gap-x-8 gap-y-4">
