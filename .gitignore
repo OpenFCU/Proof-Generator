@@ -8,8 +8,4 @@ publish/
 .idea/
 *.iml
 
-# terraform
-deploy/**/*.*
-!deploy/**/*.tf
-
 cache/

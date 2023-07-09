@@ -72,7 +72,7 @@ var handler = async Task<APIGatewayHttpApiV2ProxyResponse> (APIGatewayHttpApiV2P
         var request = serializer.Deserialize<Request>(requestStream);
         requestStream.Seek(0, SeekOrigin.Begin);
         var hash = Convert.ToHexString(await md5.ComputeHashAsync(requestStream));
-        var generatedPath = await GenerateProofImage(request.Student, request.Icon, request.Stamp, hash);
+        var generatedPath = await GenerateProofImage(request.Title, request.Student, request.Icon, request.Stamp, hash);
         if (generatedPath == null) return BadRequestResponse;
 
         var responseStream = new MemoryStream(64);
@@ -103,7 +103,7 @@ FileInfo? CheckGeneratedFilePath(string httpPath)
     return info;
 }
 
-async Task<string?> GenerateProofImage(Student student, string iconFileName, string stampFileName, string hash)
+async Task<string?> GenerateProofImage(string title, Student student, string iconFileName, string stampFileName, string hash)
 {
     var httpPath = $"/generated/{hash}.webp";
     var info = CheckGeneratedFilePath(httpPath);
@@ -126,7 +126,7 @@ async Task<string?> GenerateProofImage(Student student, string iconFileName, str
             stamp = await stampTask.WaitAsync(imgurTimeLimit);
     }
 
-    var doc = new StudentProofDocument(student, icon, stamp);
+    var doc = new StudentProofDocument(title, student, icon, stamp);
     var settings = new ImageGenerationSettings()
     {
         ImageFormat = ImageFormat.Webp,
