@@ -24,6 +24,7 @@
               "nationality": document.getElementById('nationality').value,
               "kind": document.getElementById('kind').value,
             },
+            "title": document.getElementById('title').value,
             "icon": document.getElementById('icon').value,
             "stamp": document.getElementById('stamp').value
           })
@@ -88,14 +89,19 @@
           <input name="department" id="department" type="text" class="field" />
         </div>
         <div>
+          <label for="title">標題</label>
+          <br />
+          <input name="title" id="title" type="text" placeholder="學生在學證明書" class="field" />
+        </div>
+        <div>
           <label for="icon">校徽</label>
           <br />
-          <input name="icon" id="icon" type="text" value="w9Ezljy.png" class="field" />
+          <input name="icon" id="icon" type="text" placeholder="w9Ezljy.png" class="field" />
         </div>
         <div>
           <label for="stamp">戳章</label>
           <br />
-          <input name="stamp" id="stamp" type="text" value="v0jirwd.png" class="field" />
+          <input name="stamp" id="stamp" type="text" placeholder="v0jirwd.png" class="field" />
         </div>
         <div class="col-span-full h-8"></div>
       </div>

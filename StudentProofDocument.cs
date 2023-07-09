@@ -8,11 +8,13 @@ namespace ProofGenerator;
 public class StudentProofDocument : IDocument
 {
     private readonly DocumentMetadata _metadata;
+    private readonly string _title;
     private readonly Student _model;
     private readonly byte[]? _icon;
     private readonly byte[]? _stamp;
-    public StudentProofDocument(Student model, byte[]? icon, byte[]? stamp)
+    public StudentProofDocument(string title, Student model, byte[]? icon, byte[]? stamp)
     {
+        _title = title;
         _model = model;
         _icon = icon;
         _stamp = stamp;
@@ -32,7 +34,7 @@ public class StudentProofDocument : IDocument
             page.PageColor(Colors.White);
 
             page.Header().ComposeHeader(_icon);
-            page.Content().ComposeContent(_model);
+            page.Content().ComposeContent(_title, _model);
             if (_stamp != null)
             {
                 page.Foreground().ComposeStamp(_stamp);
@@ -92,7 +94,7 @@ public static class StudentProofDocumentExt
             });
     }
 
-    public static void ComposeContent(this IContainer container, Student student)
+    public static void ComposeContent(this IContainer container, string title, Student student)
     {
         container
             .DefaultTextStyle(s => s.FontFamily("TW-Kai").FontSize(20).LineHeight(1.5f))
@@ -104,7 +106,7 @@ public static class StudentProofDocumentExt
                     .PaddingBottom(8, Unit.Millimetre)
                     .PaddingRight(20, Unit.Millimetre)
                     .AlignCenter()
-                    .Text("學生在學證明書")
+                    .Text(title)
                     .FontSize(26);
                 column.Item().ComposeField("姓名", student.Name);
                 column.Item().ComposeField("學號", student.Id);
