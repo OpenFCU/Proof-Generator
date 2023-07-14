@@ -3,7 +3,6 @@ FROM mcr.microsoft.com/dotnet/sdk:7.0-alpine AS build
 ENV DOTNET_CLI_TELEMETRY_OPTOUT=1
 WORKDIR /source
 
-RUN apk add clang build-base zlib-dev
 COPY *.csproj .
 RUN dotnet restore
 COPY . .
