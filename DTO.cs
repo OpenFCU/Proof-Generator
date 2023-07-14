@@ -1,10 +1,11 @@
 namespace ProofGenerator;
 
 public record Request(
-    Student Student,
+    string Lang,
     string Title,
     string Icon,
-    string Stamp
+    string Stamp,
+    Student Student
 );
 
 public record Response(

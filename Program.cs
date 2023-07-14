@@ -72,7 +72,7 @@ var handler = async Task<APIGatewayHttpApiV2ProxyResponse> (APIGatewayHttpApiV2P
         var request = serializer.Deserialize<Request>(requestStream);
         requestStream.Seek(0, SeekOrigin.Begin);
         var hash = Convert.ToHexString(await md5.ComputeHashAsync(requestStream));
-        var generatedPath = await GenerateProofImage(request.Title, request.Student, request.Icon, request.Stamp, hash);
+        var generatedPath = await GenerateProofImage(request, hash);
         if (generatedPath == null) return BadRequestResponse;
 
         var responseStream = new MemoryStream(64);
@@ -103,30 +103,36 @@ FileInfo? CheckGeneratedFilePath(string httpPath)
     return info;
 }
 
-async Task<string?> GenerateProofImage(string title, Student student, string iconFileName, string stampFileName, string hash)
+async Task<string?> GenerateProofImage(Request request, string hash)
 {
     var httpPath = $"/generated/{hash}.webp";
     var info = CheckGeneratedFilePath(httpPath);
     if (info == null) return null;
 
-    if (!Enum.IsDefined<Degree>(student.Degree)) return null;
+    if (!Enum.IsDefined<Degree>(request.Student.Degree)) return null;
 
     byte[]? icon = null, stamp = null;
 
     using (var _client = new HttpClient())
     {
         Task<byte[]>? iconTask = null, stampTask = null;
-        if (ImgurPattern().IsMatch(iconFileName))
-            try { iconTask = _client.GetByteArrayAsync($"https://i.imgur.com/{iconFileName}"); } catch (HttpRequestException) { }
-        if (ImgurPattern().IsMatch(stampFileName))
-            try { stampTask = _client.GetByteArrayAsync($"https://i.imgur.com/{stampFileName}"); } catch (HttpRequestException) { }
+        if (ImgurPattern().IsMatch(request.Icon))
+            try { iconTask = _client.GetByteArrayAsync($"https://i.imgur.com/{request.Icon}"); } catch (HttpRequestException) { }
+        if (ImgurPattern().IsMatch(request.Stamp))
+            try { stampTask = _client.GetByteArrayAsync($"https://i.imgur.com/{request.Stamp}"); } catch (HttpRequestException) { }
         if (iconTask != null)
             icon = await iconTask.WaitAsync(imgurTimeLimit);
         if (stampTask != null)
             stamp = await stampTask.WaitAsync(imgurTimeLimit);
     }
 
-    var doc = new StudentProofDocument(title, student, icon, stamp);
+    ProofDocument? doc = request.Lang switch
+    {
+        "en" => new EnglishProofDocument(request.Title, request.Student, icon, stamp),
+        "zh" => new ChineseProofDocument(request.Title, request.Student, icon, stamp),
+        _ => null,
+    };
+    if (doc == null) return null;
     var settings = new ImageGenerationSettings()
     {
         ImageFormat = ImageFormat.Webp,

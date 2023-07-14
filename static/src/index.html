@@ -13,6 +13,10 @@
           method: 'post',
           headers: new Headers({'Content-Type': 'application/json'}),
           body: JSON.stringify({
+            "lang": document.getElementById('lang').value,
+            "title": document.getElementById('title').value,
+            "icon": document.getElementById('icon').value,
+            "stamp": document.getElementById('stamp').value,
             "student": {
               "name": document.getElementById('name').value,
               "id": document.getElementById('id').value,
@@ -23,10 +27,7 @@
               "department": document.getElementById('department').value,
               "nationality": document.getElementById('nationality').value,
               "kind": document.getElementById('kind').value,
-            },
-            "title": document.getElementById('title').value,
-            "icon": document.getElementById('icon').value,
-            "stamp": document.getElementById('stamp').value
+            }
           })
         });
         window.location.href = (await resp.json())["path"];
@@ -37,6 +38,29 @@
     <div class="w-screen h-screen flex flex-col items-center">
       <h1 class="text-3xl text-center font-bold break-keep px-4 py-8">逢甲在學證明格式 線上產生器</h1>
       <div class="w-full max-w-3xl px-4 pb-4 grid grid-cols-1 sm:grid-cols-2 gap-x-4 sm:gap-x-8 gap-y-3">
+        <div>
+          <label for="title">語言</label>
+          <br />
+          <select name="lang" id="lang" class="field">
+            <option value="en">English</option>
+            <option value="zh" selected>中文</option>
+          </select>
+        </div>
+        <div>
+          <label for="title">標題</label>
+          <br />
+          <input name="title" id="title" type="text" value="學生在學證明書" class="field" />
+        </div>
+        <div>
+          <label for="icon">校徽</label>
+          <br />
+          <input name="icon" id="icon" type="text" value="w9Ezljy.png" class="field" />
+        </div>
+        <div>
+          <label for="stamp">戳章</label>
+          <br />
+          <input name="stamp" id="stamp" type="text" value="v0jirwd.png" class="field" />
+        </div>
         <div>
           <label for="name">姓名</label>
           <br />
@@ -87,21 +111,6 @@
           <label for="department">系所</label>
           <br />
           <input name="department" id="department" type="text" class="field" />
-        </div>
-        <div>
-          <label for="title">標題</label>
-          <br />
-          <input name="title" id="title" type="text" placeholder="學生在學證明書" class="field" />
-        </div>
-        <div>
-          <label for="icon">校徽</label>
-          <br />
-          <input name="icon" id="icon" type="text" placeholder="w9Ezljy.png" class="field" />
-        </div>
-        <div>
-          <label for="stamp">戳章</label>
-          <br />
-          <input name="stamp" id="stamp" type="text" placeholder="v0jirwd.png" class="field" />
         </div>
         <div class="col-span-full h-8"></div>
       </div>

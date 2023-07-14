@@ -1,4 +1,8 @@
 {
+  "lang": "en",
+  "title": "Hatsune Miku",
+  "icon": "w9Ezljy.png",
+  "stamp": "GBlqjkd.png",
   "student": {
     "name": "初音 未來",
     "id": "D3939393",
@@ -9,7 +13,5 @@
     "department": "資訊工程學系",
     "nationality": "Crypton Future Media, INC.",
     "kind": "我老婆"
-  },
-  "icon": "w9Ezljy.png",
-  "stamp": "GBlqjkd.png"
+  }
 }
