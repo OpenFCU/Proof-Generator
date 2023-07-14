@@ -30,7 +30,9 @@
             }
           })
         });
-        window.location.href = (await resp.json())["path"];
+        const path = (await resp.json())["path"];
+        spinner.classList.remove("loading");
+        window.location.href = path;
       }
       </script>
   </head>
