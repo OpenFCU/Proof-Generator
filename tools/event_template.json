@@ -1,7 +1,7 @@
 {
   "version": "2.0",
   "routeKey": "$default",
-  "rawPath": "/generated/9469DCC2E5700FCC5EFCE16117B2B0C6.webp",
+  "rawPath": "/",
   "rawQueryString": "",
   "cookies": [],
   "headers": {},
@@ -15,7 +15,7 @@
     "domainPrefix": "id",
     "http": {
       "method": "GET",
-      "path": "/generated/9469DCC2E5700FCC5EFCE16117B2B0C6.webp",
+      "path": "/",
       "protocol": "HTTP/1.1",
       "sourceIp": "192.0.2.1",
       "userAgent": "agent"
